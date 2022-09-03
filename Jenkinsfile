@@ -19,6 +19,12 @@ pipeline {
              sh 'sudo docker build -t saidocker2048/project:1.0 .'
             }
         }
+        
+     stage('running docker container') {
+            steps {
+             sudo docker run -dt javacal -p 8090:8080 saidocker2048/project:1.0
+            }
+        }   
      stage('Pushing code to docker hub') {
             steps {
             withCredentials([string(credentialsId: '6636d3c5-1154-4ac0-8d3d-5f5649a671b7', variable: 'dockerpwd')])
@@ -27,6 +33,8 @@ pipeline {
             sh 'sudo docker push saidocker2048/project:1.0'
             }
             }
-        }     
+        }  
+        
+          
     }
 }
