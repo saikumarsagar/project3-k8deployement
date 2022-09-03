@@ -1,5 +1,7 @@
 pipeline {
-    agent java
+    agent {
+  label 'java'
+}
 
     stages {
         stage('check out from SCM') {
