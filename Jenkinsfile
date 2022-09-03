@@ -1,6 +1,6 @@
 pipeline {
     agent {
-  label 'java'     # running pipeline on worker node
+  label 'java'     // running pipeline on worker node
 }
 
     stages {
