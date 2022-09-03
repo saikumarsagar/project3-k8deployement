@@ -22,7 +22,7 @@ pipeline {
         
      stage('running docker container') {
             steps {
-              sh 'sudo docker run -dt javacal -p 8090:8080 saidocker2048/project:1.0'
+              sh 'sudo docker run -dt --name javacal -p 8090:8080 saidocker2048/project:1.0'
             }
         }   
      stage('Pushing code to docker hub') {
