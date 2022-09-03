@@ -1,6 +1,6 @@
 pipeline {
     agent {
-  label 'java'
+  label 'java'     # running pipeline on worker node
 }
 
     stages {
@@ -16,18 +16,18 @@ pipeline {
               junit 'target/surefire-reports/*.xml'
             }
         } 
-    stage('docker build') {
+    stage('Docker build') {
             steps {
              sh 'sudo docker build -t saidocker2048/project:1.0 .'
             }
         }
         
-     stage('running Docker container') {
+     stage('Running Docker container') {
             steps {
               sh 'sudo docker run -dt -p 8090:8080 saidocker2048/project:1.0'
             }
         }   
-     stage('Pushing code to docker hub') {
+     stage('Pushing Image to docker hub') {
             steps {
             withCredentials([string(credentialsId: '6636d3c5-1154-4ac0-8d3d-5f5649a671b7', variable: 'dockerpwd')])
             {
