@@ -22,7 +22,7 @@ pipeline {
             }
         }
         
-     stage('running docker container') {
+     stage('running Docker container') {
             steps {
               sh 'sudo docker run -dt -p 8090:8080 saidocker2048/project:1.0'
             }
