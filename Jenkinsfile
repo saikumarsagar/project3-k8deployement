@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     stages {
-        stage('SCM') {
+        stage('check out from SCM') {
             steps {
                 git 'https://github.com/saikumarsagar/project1-docker.git'
             }
