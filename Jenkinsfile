@@ -46,7 +46,7 @@ pipeline {
         }  
             stage('last') {
             steps {
-                sshPublisher(publishers: [sshPublisherDesc(configName: 'centos-k8', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'sudo kubectl apply -f /home/centos/project3-k8deployement/k8deployemnt.yml', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true)])
+                sshPublisher(publishers: [sshPublisherDesc(configName: 'centos-k8', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'kubectl apply -f /home/centos/project3-k8deployement/k8deployemnt.yml', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true)])
             }
         }
      
