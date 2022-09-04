@@ -42,7 +42,14 @@ pipeline {
             }
             }
         }  
-        
+
+     stage('k8 deployement using ansible conrtoll server') {
+            steps {
+                
+              sshPublisher(publishers: [sshPublisherDesc(configName: 'centos-k8', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '''sh \'ansible k8 -m git -a "clone=yes repo=https://github.com/saikumarsagar/project3-k8deployement.git dest=/home/centos/k8 " -b\'
+sh \'ansible k8 -m shell -a "cmd= kubectl apply -f /home/centos/k8/k8deployemnt.yml" -b \'''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+            }
+        }        
           
     }
 }
