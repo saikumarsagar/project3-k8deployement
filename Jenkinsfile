@@ -46,6 +46,7 @@ pipeline {
         }  
             stage('k8 deployemnet') {
             steps {
+                //used jenkins syntax genarator, got below syntax, where it will connec the k8 workstation where kops insatlled and from there it will run deployment
                 sshPublisher(publishers: [sshPublisherDesc(configName: 'centos-k8', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'kubectl apply -f /home/centos/project3-k8deployement/k8deployemnt.yml', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true)])
             }
         }
