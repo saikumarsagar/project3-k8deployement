@@ -19,7 +19,9 @@ pipeline {
     stage('Docker build') {
             steps {
                // for 2nd time running job, to avoid conflicts removing previous builds and images
-              //  sh 'sudo docker stop javacal'            
+                sh 'sudo systemctl start docker '
+              //  sh 'sudo docker stop javacal' 
+                
                 sh 'sudo docker rm -f javacal'
                 sh 'sudo docker rm -f saidocker2048/project:1.0'
               // building docker image
