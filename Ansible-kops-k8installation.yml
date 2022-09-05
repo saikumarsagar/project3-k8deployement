@@ -1,0 +1,82 @@
+---
+- name: settingup k8 cluster using kops
+  hosts: c2
+  become: yes
+  tasks:
+
+  - name: downloading url for kops
+    shell:
+      cmd: curl -LO https://github.com/kubernetes/kops/releases/download/$(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d '"' -f 4)/kops-linux-amd64
+      chdir: /home/ec2-user
+
+  - name: Changing permissions
+    file:
+      path: /home/ec2-user/kops-linux-amd64
+      mode: '0775'
+
+  - name: moving file
+    shell:
+      cmd: mv /home/ec2-user/kops-linux-amd64 /usr/local/bin/kops
+
+  - name: downloading url kubectl
+    shell:
+      cmd: curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+      chdir: /home/ec2-user
+
+  - name: Changing permissions
+    file:
+      path: kubectl
+      mode: '0775'
+
+
+  - name: moving file
+    shell:
+      cmd: mv /home/ec2-user/kubectl /usr/local/bin/kubectl
+
+#already aws cli setup donw using user data and admin role attached to server
+  - name: creating s3 bucket
+    shell:
+      cmd: /usr/local/bin/aws s3 mb s3://k8s-project-2
+
+  - name: Exporting state to s3 bucket
+    shell:
+      cmd: export KOPS_STATE_STORE=s3://k8s-project-2
+
+
+  - name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
+    openssh_keypair:
+      path: /home/ec2-user/.ssh/id_rsa
+      owner: ec2-user
+      group: ec2-user
+
+  - name: Fix owner of the generated pub key
+    file:
+      path: /home/ec2-user/.ssh/id_rsa.pub
+      owner: ec2-user
+      group: ec2-user
+
+
+
+  - name: creating k8 cluster
+    ansible.builtin.command:
+      cmd: /usr/local/bin/kops create cluster --yes --state=s3://k8s-project-2 --zones=ap-south-1b,ap-south-1c --node-count=2 --name=9am.k8s.local
+    register: command_output
+
+  - debug:
+      var: command_output.stdout_lines
+
+  - name: Pause for 5 minutes to build app cache
+    ansible.builtin.pause:
+      minutes: 5
+
+  - name: config
+    shell:
+      cmd: /usr/local/bin/kops export kubecfg --name=9am.k8s.local --admin --state=s3://k8s-project-2
+    become_user: ec2-user
+    register: put
+
+  - debug:
+      var: put.stdout_lines
+
+
+
