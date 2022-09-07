@@ -35,10 +35,11 @@ pipeline {
               sh 'sudo docker run -dt -p 8090:8080 --name=javacal saidocker2048/project:1.0'
             }
         }   
-     stage('Pushing Image to docker hub') {
+     stage('Pushing Image to Docker hub') {
             steps {
             withCredentials([string(credentialsId: '6636d3c5-1154-4ac0-8d3d-5f5649a671b7', variable: 'dockerpwd')])
             {
+            //declared docker password, so that we can login to docker hub while pushing image
             sh "sudo docker login -u saidocker2048 -p ${dockerpwd}"
             sh 'sudo docker push saidocker2048/project:1.0'
             }
