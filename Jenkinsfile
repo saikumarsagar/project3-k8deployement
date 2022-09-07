@@ -20,19 +20,19 @@ pipeline {
             steps {
                // for 2nd time running job, to avoid conflicts removing previous builds and images
                 sh 'sudo systemctl start docker '
-              //  sh 'sudo docker stop javacal' 
+              sh 'sudo docker stop javacal' 
                 
                 sh 'sudo docker rm -f javacal'
-                sh 'sudo docker rm -f saidocker2048/project:1.0'
+                sh 'sudo docker rm -f saidocker2048/project'
               // building docker image
-             sh 'sudo docker build -t saidocker2048/project:1.0 .'
+             sh 'sudo docker build -t saidocker2048/project .'
             }
         }
         
      stage('Running Docker container') {
             steps {
                 
-              sh 'sudo docker run -dt -p 8090:8080 --name=javacal saidocker2048/project:1.0'
+              sh 'sudo docker run -dt -p 8090:8080 --name=javacal saidocker2048/project'
             }
         }   
      stage('Pushing Image to Docker hub') {
